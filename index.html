@@ -1,20 +1,52 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html>
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ridho Sandhika</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+    }
+    body, html {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #e0f7fa, #fff);
       color: #333;
+      height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      overflow: hidden;
     }
+
+    .loader-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #e0f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 0.5s ease-out;
+    }
+
+    .loader {
+      border: 6px solid #b2ebf2;
+      border-top: 6px solid #00acc1;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .card {
       background: white;
       border-radius: 2rem;
@@ -23,8 +55,16 @@
       width: 90%;
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       text-align: center;
-      animation: fadeIn 1s ease-in-out;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s ease;
     }
+
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .profile-img {
       width: 120px;
       height: 120px;
@@ -35,21 +75,27 @@
       margin-top: -80px;
       background: white;
     }
+
     h1 {
       font-size: 1.8rem;
       margin: 1rem 0 0.25rem;
     }
+
     p {
       font-size: 0.95rem;
       color: #666;
     }
+
     .links {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
       margin-top: 2rem;
     }
+
     .link-btn {
+      position: relative;
+      overflow: hidden;
       padding: 0.75rem 1.25rem;
       background: #00acc1;
       color: white;
@@ -58,34 +104,194 @@
       transition: background 0.3s;
       font-weight: 500;
     }
+
     .link-btn:hover {
       background: #008ca1;
     }
+
+    .link-btn::after {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .link-btn.clicked::after {
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0;
+    }
+
     .footer {
       margin-top: 2rem;
       font-size: 0.8rem;
       color: #aaa;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    .sound-controls {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+
+    .sound-controls button {
+      background: #00acc1;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .sound-controls button:hover {
+      background: #008ca1;
+    }
+
+    .lokasi-kiri {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(0, 172, 193, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.85rem;
+      color: #007c91;
+      z-index: 10000;
+      display: none;
+      align-items: flex-start;
+      gap: 0.5rem;
+      flex-direction: row;
+      backdrop-filter: blur(4px);
+    }
+
+    .lokasi-icon {
+      width: 16px;
+      height: 16px;
+      fill: #007c91;
+      margin-top: 3px;
+    }
+
+    .time-display {
+      font-size: 0.75rem;
+      color: #555;
+      margin-top: 2px;
     }
   </style>
 </head>
 <body>
-  <div class="card">
+
+  <!-- Lokasi & Tanggal + Waktu -->
+  <div class="lokasi-kiri hidden-until-loaded">
+    <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+      <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+    </svg>
+    <div>
+      Sumatera Utara, Indonesia
+      <div id="timeDisplay" class="time-display"></div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div class="loader-container" id="loader">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Konten Utama -->
+  <div class="card hidden-until-loaded" id="mainCard">
     <img src="new-image.jpg" alt="Ridho Sandhika" class="profile-img">
     <h1>Ridho Sandhika</h1>
-    <p>Web Developer | Game Creator | Gabut</p><div class="links">
-  <a class="link-btn" href="https://studioofficialridho.github.io/Website-Portofolio/">Web Portofolio Saya</a>
-  <a class="link-btn" href="https://gamedinoid.github.io/dinolovedino/?fbclid=PAY2xjawJfTehleHRuA2FlbQIxMQABpyVeqvDLDZZkG8MG00FQMi5M7b6P_V-gH2qkbRxN8K6_aj_oEvpbbiG9EUF__aem_Mt1jgMZoTyAgoMZHLdle5w" target="_blank">Game Dino Raghrrr</a>
-  <a class="link-btn" href="https://gamesambungayat.github.io/sambungayat/" target="_blank">Game Sambung Ayat Al-Quran</a>
-</div>
-
-<div class="footer">
-  studioofficialridho 2025 || Semua hak dilindungi.
-</div>
-
+    <p>Web Developer | Game Creator | Gabut</p>
+    <div class="links">
+      <a class="link-btn" href="https://studioofficialridho.github.io/Website-Portofolio/">Web Portofolio Saya</a>
+      <a class="link-btn" href="https://gamedinoid.github.io/dinolovedino/" target="_blank">Game Dino Raghrrr</a>
+      <a class="link-btn" href="https://gamesambungayat.github.io/sambungayat/" target="_blank">Game Sambung Ayat Al-Quran</a>
+    </div>
+    <div class="footer">
+      studioofficialridho 2025 || Semua Hak Cipta Dilindungi.
+    </div>
   </div>
+
+  <!-- Suara Intro -->
+  <audio id="introSound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
+
+  <!-- Tombol Suara -->
+  <div class="sound-controls hidden-until-loaded" id="soundControls">
+    <button id="playIntro">Putar Intro</button>
+    <button id="stopIntro">Matikan Intro</button>
+  </div>
+
+  <script>
+    // Loading dan animasi masuk
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      const card = document.getElementById("mainCard");
+      const sound = document.getElementById("introSound");
+      const playBtn = document.getElementById("playIntro");
+      const stopBtn = document.getElementById("stopIntro");
+
+      setTimeout(() => {
+        loader.style.opacity = "0";
+        loader.style.pointerEvents = "none";
+        card.classList.add("show");
+
+        // Tampilkan semua elemen yang disembunyikan saat loading
+        document.querySelectorAll(".hidden-until-loaded").forEach(el => {
+          if (el.id === "soundControls" || el.classList.contains("lokasi-kiri")) {
+            el.style.display = "flex";
+          } else {
+            el.style.display = "block";
+          }
+        });
+
+        // Mainkan intro otomatis
+        const playPromise = sound.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      }, 1300);
+
+      playBtn.addEventListener("click", () => {
+        sound.play();
+      });
+
+      stopBtn.addEventListener("click", () => {
+        sound.pause();
+        sound.currentTime = 0;
+      });
+    });
+
+    // Efek klik tombol
+    document.querySelectorAll('.link-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        this.classList.remove('clicked');
+        void this.offsetWidth;
+        this.classList.add('clicked');
+      });
+    });
+
+    // Jam & Tanggal real-time
+    function updateTime() {
+      const timeDisplay = document.getElementById("timeDisplay");
+      const now = new Date();
+      const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const dateStr = now.toLocaleDateString('id-ID', optionsDate);
+      const timeStr = now.toLocaleTimeString('id-ID', optionsTime);
+      timeDisplay.textContent = `${dateStr} • ${timeStr}`;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
 </body>
 </html>
