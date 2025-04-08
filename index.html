@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ridho Sandhika</title>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
     body, html {
       margin: 0;
       padding: 0;
@@ -48,14 +50,15 @@
     .card {
       background: white;
       border-radius: 2rem;
-      padding: 2rem;
-      max-width: 400px;
+      padding: 1.5rem;
+      max-width: 360px;
       width: 90%;
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       text-align: center;
       opacity: 0;
       transform: translateY(30px);
       transition: all 0.7s ease;
+      margin-top: 3rem;
     }
 
     .show {
@@ -64,18 +67,18 @@
     }
 
     .profile-img {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
       object-fit: cover;
       border-radius: 50%;
       border: 4px solid white;
       box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-      margin-top: -80px;
+      margin-top: -60px;
       background: white;
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-size: 1.5rem;
       margin: 1rem 0 0.25rem;
     }
 
@@ -160,18 +163,16 @@
       position: fixed;
       top: 1rem;
       left: 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      z-index: 10000;
-      font-size: 0.85rem;
-    }
-
-    .lokasi-box {
       background: rgba(0, 172, 193, 0.1);
       padding: 0.5rem 1rem;
       border-radius: 1rem;
+      font-size: 0.75rem;
       color: #007c91;
+      z-index: 10000;
+      display: none;
+      align-items: flex-start;
+      gap: 0.5rem;
+      flex-direction: column;
       backdrop-filter: blur(4px);
     }
 
@@ -182,38 +183,40 @@
       margin-right: 6px;
     }
 
-    .time-display {
-      font-size: 0.75rem;
-      color: #555;
+    .lokasi-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.25rem;
     }
 
-    .hidden-until-loaded { display: none; }
+    .time-display {
+      font-size: 0.7rem;
+      color: #555;
+      margin-top: 2px;
+    }
   </style>
 </head>
 <body>
 
-  <!-- Lokasi -->
+  <!-- Lokasi & Tanggal + Waktu -->
   <div class="lokasi-kiri hidden-until-loaded">
-    <!-- Lokasi Ridho -->
-    <div class="lokasi-box">
-      <div style="display: flex; align-items: center;">
-        <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-          <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-        </svg>
+    <div class="lokasi-item">
+      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+      </svg>
+      <div>
         Kota Medan, Indonesia
+        <div id="timeDisplay" class="time-display"></div>
       </div>
-      <div id="timeDisplay" class="time-display"></div>
     </div>
-
-    <!-- Lokasi Pengguna -->
-    <div class="lokasi-box">
-      <div style="display: flex; align-items: center;">
-        <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-          <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-        </svg>
-        <span id="userLokasiText">Mendeteksi lokasi...</span>
+    <div class="lokasi-item">
+      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+      </svg>
+      <div>
+        Kota Medan
+        <div id="userTime" class="time-display"></div>
       </div>
-      <div id="userTime" class="time-display"></div>
     </div>
   </div>
 
@@ -247,6 +250,7 @@
   </div>
 
   <script>
+    // Loading dan animasi masuk
     window.addEventListener("load", () => {
       const loader = document.getElementById("loader");
       const card = document.getElementById("mainCard");
@@ -267,16 +271,24 @@
           }
         });
 
-        sound.play().catch(() => {});
+        // Mainkan intro otomatis
+        const playPromise = sound.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
       }, 1300);
 
-      playBtn.addEventListener("click", () => sound.play());
+      playBtn.addEventListener("click", () => {
+        sound.play();
+      });
+
       stopBtn.addEventListener("click", () => {
         sound.pause();
         sound.currentTime = 0;
       });
     });
 
+    // Efek klik tombol
     document.querySelectorAll('.link-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         this.classList.remove('clicked');
@@ -285,12 +297,13 @@
       });
     });
 
+    // Jam & Tanggal real-time
     function updateTime() {
       const now = new Date();
-      const optsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-      const optsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-      const dateStr = now.toLocaleDateString('id-ID', optsDate);
-      const timeStr = now.toLocaleTimeString('id-ID', optsTime);
+      const optionsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const optionsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const dateStr = now.toLocaleDateString('id-ID', optionsDate);
+      const timeStr = now.toLocaleTimeString('id-ID', optionsTime);
 
       document.getElementById("timeDisplay").textContent = `${dateStr} • ${timeStr}`;
       document.getElementById("userTime").textContent = `${dateStr} • ${timeStr}`;
@@ -298,26 +311,6 @@
 
     setInterval(updateTime, 1000);
     updateTime();
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success => {
-        const lat = success.coords.latitude;
-        const lon = success.coords.longitude;
-        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-          .then(res => res.json())
-          .then(data => {
-            const lokasi = data.address.city || data.address.town || data.address.village || data.display_name;
-            document.getElementById("userLokasiText").textContent = lokasi;
-          })
-          .catch(() => {
-            document.getElementById("userLokasiText").textContent = "Lokasi tidak ditemukan";
-          });
-      }, () => {
-        document.getElementById("userLokasiText").textContent = "Izin lokasi ditolak";
-      });
-    } else {
-      document.getElementById("userLokasiText").textContent = "Browser tidak mendukung lokasi";
-    }
   </script>
 </body>
 </html>
