@@ -7,7 +7,8 @@
   <style>
     * { box-sizing: border-box; }
     body, html {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #e0f7fa, #fff);
       color: #333;
@@ -17,9 +18,11 @@
       justify-content: center;
       overflow: hidden;
     }
+
     .loader-container {
       position: fixed;
-      width: 100%; height: 100%;
+      width: 100%;
+      height: 100%;
       background: #e0f7fa;
       display: flex;
       align-items: center;
@@ -27,17 +30,21 @@
       z-index: 999;
       transition: opacity 0.5s ease-out;
     }
+
     .loader {
       border: 6px solid #b2ebf2;
       border-top: 6px solid #00acc1;
       border-radius: 50%;
-      width: 60px; height: 60px;
+      width: 60px;
+      height: 60px;
       animation: spin 1s linear infinite;
     }
+
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+
     .card {
       background: white;
       border-radius: 2rem;
@@ -50,10 +57,12 @@
       transform: translateY(30px);
       transition: all 0.7s ease;
     }
+
     .show {
       opacity: 1;
       transform: translateY(0);
     }
+
     .profile-img {
       width: 120px;
       height: 120px;
@@ -64,20 +73,24 @@
       margin-top: -80px;
       background: white;
     }
+
     h1 {
       font-size: 1.8rem;
       margin: 1rem 0 0.25rem;
     }
+
     p {
       font-size: 0.95rem;
       color: #666;
     }
+
     .links {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
       margin-top: 2rem;
     }
+
     .link-btn {
       position: relative;
       overflow: hidden;
@@ -89,9 +102,11 @@
       transition: background 0.3s;
       font-weight: 500;
     }
+
     .link-btn:hover {
       background: #008ca1;
     }
+
     .link-btn::after {
       content: "";
       position: absolute;
@@ -105,15 +120,18 @@
       transition: transform 0.5s ease, opacity 0.5s ease;
       pointer-events: none;
     }
+
     .link-btn.clicked::after {
       transform: translate(-50%, -50%) scale(4);
       opacity: 0;
     }
+
     .footer {
       margin-top: 2rem;
       font-size: 0.8rem;
       color: #aaa;
     }
+
     .sound-controls {
       position: fixed;
       top: 1rem;
@@ -123,6 +141,7 @@
       gap: 0.5rem;
       z-index: 9999;
     }
+
     .sound-controls button {
       background: #00acc1;
       color: white;
@@ -132,64 +151,69 @@
       font-weight: bold;
       cursor: pointer;
     }
+
     .sound-controls button:hover {
       background: #008ca1;
     }
+
     .lokasi-kiri {
       position: fixed;
       top: 1rem;
       left: 1rem;
-      background: rgba(0, 172, 193, 0.1);
-      padding: 0.75rem 1rem;
-      border-radius: 1rem;
-      font-size: 0.85rem;
-      color: #007c91;
-      z-index: 10000;
-      display: none;
-      align-items: flex-start;
-      gap: 1rem;
+      display: flex;
       flex-direction: column;
+      gap: 0.5rem;
+      z-index: 10000;
+      font-size: 0.85rem;
+    }
+
+    .lokasi-box {
+      background: rgba(0, 172, 193, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      color: #007c91;
       backdrop-filter: blur(4px);
     }
-    .lokasi-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
+
     .lokasi-icon {
       width: 16px;
       height: 16px;
       fill: #007c91;
-      margin-top: 3px;
+      margin-right: 6px;
     }
+
     .time-display {
       font-size: 0.75rem;
       color: #555;
-      margin-top: 2px;
     }
+
+    .hidden-until-loaded { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Lokasi & Tanggal + Waktu -->
+  <!-- Lokasi -->
   <div class="lokasi-kiri hidden-until-loaded">
-    <div class="lokasi-item">
-      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-        <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-      </svg>
-      <div>
-      Kota Medan, Indonesia
-        <div id="timeDisplay" class="time-display"></div>
+    <!-- Lokasi Ridho -->
+    <div class="lokasi-box">
+      <div style="display: flex; align-items: center;">
+        <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+          <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+        </svg>
+        Kota Medan, Indonesia
       </div>
+      <div id="timeDisplay" class="time-display"></div>
     </div>
-    <div class="lokasi-item" id="userLocation">
-      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-        <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
-      </svg>
-      <div>
-        <div id="userLokasiText" style="font-size: 0.8rem;">Menentukan lokasi...</div>
-        <div id="userTime" style="font-size: 0.75rem; color: #555;"></div>
+
+    <!-- Lokasi Pengguna -->
+    <div class="lokasi-box">
+      <div style="display: flex; align-items: center;">
+        <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+          <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+        </svg>
+        <span id="userLokasiText">Mendeteksi lokasi...</span>
       </div>
+      <div id="userTime" class="time-display"></div>
     </div>
   </div>
 
@@ -223,7 +247,6 @@
   </div>
 
   <script>
-    // Loading dan animasi masuk
     window.addEventListener("load", () => {
       const loader = document.getElementById("loader");
       const card = document.getElementById("mainCard");
@@ -236,13 +259,15 @@
         loader.style.pointerEvents = "none";
         card.classList.add("show");
 
-        // Tampilkan elemen yang disembunyikan saat loading
         document.querySelectorAll(".hidden-until-loaded").forEach(el => {
-          el.style.display = (el.id === "soundControls" || el.classList.contains("lokasi-kiri")) ? "flex" : "block";
+          if (el.id === "soundControls" || el.classList.contains("lokasi-kiri")) {
+            el.style.display = "flex";
+          } else {
+            el.style.display = "block";
+          }
         });
 
-        const playPromise = sound.play();
-        if (playPromise !== undefined) playPromise.catch(() => {});
+        sound.play().catch(() => {});
       }, 1300);
 
       playBtn.addEventListener("click", () => sound.play());
@@ -252,7 +277,6 @@
       });
     });
 
-    // Efek klik tombol
     document.querySelectorAll('.link-btn').forEach(btn => {
       btn.addEventListener('click', function () {
         this.classList.remove('clicked');
@@ -261,44 +285,38 @@
       });
     });
 
-    // Waktu
     function updateTime() {
       const now = new Date();
-      const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      document.getElementById("timeDisplay").textContent = `${dateStr} • ${timeStr}`;
-    }
-    setInterval(updateTime, 1000); updateTime();
+      const optsDate = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const optsTime = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      const dateStr = now.toLocaleDateString('id-ID', optsDate);
+      const timeStr = now.toLocaleTimeString('id-ID', optsTime);
 
-    // Lokasi & waktu pengguna
-    function updateUserTime() {
-      const now = new Date();
-      const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById("timeDisplay").textContent = `${dateStr} • ${timeStr}`;
       document.getElementById("userTime").textContent = `${dateStr} • ${timeStr}`;
     }
-    setInterval(updateUserTime, 1000); updateUserTime();
 
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const lat = pos.coords.latitude;
-          const lon = pos.coords.longitude;
-          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
-            .then(res => res.json())
-            .then(data => {
-              const lokasi = data.address.city || data.address.town || data.address.village || data.address.state || 'Tidak diketahui';
-              document.getElementById("userLokasiText").textContent = ` ${lokasi}`;
-            }).catch(() => {
-              document.getElementById("userLokasiText").textContent = " Lokasi tidak ditemukan";
-            });
-        },
-        () => {
-          document.getElementById("userLokasiText").textContent = " Izin lokasi ditolak";
-        }
-      );
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(success => {
+        const lat = success.coords.latitude;
+        const lon = success.coords.longitude;
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+          .then(res => res.json())
+          .then(data => {
+            const lokasi = data.address.city || data.address.town || data.address.village || data.display_name;
+            document.getElementById("userLokasiText").textContent = lokasi;
+          })
+          .catch(() => {
+            document.getElementById("userLokasiText").textContent = "Lokasi tidak ditemukan";
+          });
+      }, () => {
+        document.getElementById("userLokasiText").textContent = "Izin lokasi ditolak";
+      });
     } else {
-      document.getElementById("userLokasiText").textContent = "Lokasi tidak tersedia";
+      document.getElementById("userLokasiText").textContent = "Browser tidak mendukung lokasi";
     }
   </script>
 </body>
