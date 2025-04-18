@@ -250,7 +250,7 @@
         <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
       </svg>
       <div>
-        <strong></strong> <span id="userLocation">Mendeteksi lokasi...</span>
+        <strong></strong> <span id="userLocation"> Sedang Mendeteksi Lokasi •••</span>
         <div id="userTimeDisplay" class="time-display"></div>
       </div>
     </div>
@@ -316,7 +316,7 @@
             // Jika gagal atau ditolak
             switch(error.code) {
               case error.PERMISSION_DENIED:
-                locationElement.textContent = "Izin lokasi ditolak";
+                locationElement.textContent = "Izin lokasi om ditolak";
                 break;
               case error.POSITION_UNAVAILABLE:
                 locationElement.textContent = "Informasi lokasi tidak tersedia";
@@ -398,7 +398,7 @@
 
         // Deteksi lokasi pengguna
         detectUserLocation();
-      }, 1300);
+      }, 100);
 
       playBtn.addEventListener("click", () => {
         sound.play();
