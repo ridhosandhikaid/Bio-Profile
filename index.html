@@ -3,469 +3,428 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Ridho Sandhika | Professional Final Edition</title>
-  
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
-  
+  <title>Ridho Sandhika</title>
   <style>
     :root {
-      --primary-color: #00acc1;
-      --primary-dark-color: #00838f;
-      --background-color: #0f172a;
-      --particle-color: #4dd0e1;
-      --text-dark: #e2e8f0;
-      --text-light: #94a3b8;
-      --card-bg: rgba(30, 41, 59, 0.75);
-      --shadow-color: rgba(0, 0, 0, 0.2);
-      --glow-color: rgba(0, 172, 193, 0.5);
-      --animation-stagger-delay: 100ms;
+      --vh: 1vh;
     }
     
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
-
+    
     body, html {
-      font-family: 'Poppins', 'Segoe UI', sans-serif;
-      color: var(--text-dark);
-      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #fff);
+      color: #333;
+      height: calc(var(--vh, 1vh) * 100);
       min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
-      background-color: var(--background-color);
-      overflow: hidden;
-      position: relative;
+      overflow: auto;
     }
 
-    #particle-canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
+    .loader-container {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #e0f7fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      transition: opacity 0.5s ease-out;
     }
-    
-    .card-container {
-        perspective: 1500px;
-        z-index: 10;
+
+    .loader {
+      border: 6px solid #b2ebf2;
+      border-top: 6px solid #00acc1;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
     }
-    
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-radius: 1.75rem;
+      background: white;
+      border-radius: 2rem;
       padding: 1.5rem;
       width: 100%;
-      max-width: 400px;
-      box-shadow: 0 25px 50px -12px var(--shadow-color);
+      max-width: 360px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       text-align: center;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.7s ease;
       margin: 1rem auto;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transform-style: preserve-3d;
-      transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-    
-    .animated-element {
-        opacity: 0;
-        transform: translateY(25px);
-        animation: slide-up-fade-in 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-    }
-    
-    @keyframes slide-up-fade-in {
-        to { opacity: 1; transform: translateY(0); }
     }
 
-    .profile-img { animation-delay: calc(var(--animation-stagger-delay) * 1); }
-    h1 { animation-delay: calc(var(--animation-stagger-delay) * 2); }
-    .subtitle { animation-delay: calc(var(--animation-stagger-delay) * 3); }
-    .link-btn:nth-child(1) { animation-delay: calc(var(--animation-stagger-delay) * 4); }
-    .link-btn:nth-child(2) { animation-delay: calc(var(--animation-stagger-delay) * 5); }
-    .link-btn:nth-child(3) { animation-delay: calc(var(--animation-stagger-delay) * 6); }
-    .link-btn:nth-child(4) { animation-delay: calc(var(--animation-stagger-delay) * 7); }
-    .link-btn:nth-child(5) { animation-delay: calc(var(--animation-stagger-delay) * 8); }
-    .footer { animation-delay: calc(var(--animation-stagger-delay) * 9); }
+    @media (min-width: 768px) {
+      .card {
+        max-width: 360px;
+      }
+    }
 
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .profile-img {
-      width: 90px;
-      height: 90px;
+      width: 80px;
+      height: 80px;
       object-fit: cover;
       border-radius: 50%;
-      border: 4px solid var(--primary-color);
-      box-shadow: 0 0 20px var(--glow-color);
-      margin-top: -calc(45px + 1.5rem);
-      background: var(--background-color);
+      border: 4px solid white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      margin-top: -40px;
+      background: white;
     }
 
-    h1 { 
-      font-size: clamp(1.6rem, 5vw, 2rem); 
-      /* PERUBAHAN: Menambah jarak atas dan bawah judul */
-      margin: 1.25rem 0 0.5rem; 
-      font-weight: 700; 
+    h1 {
+      font-size: 1.5rem;
+      margin: 1rem 0 0.25rem;
     }
 
-    .subtitle { 
-      font-size: 0.95rem; 
-      color: var(--text-light); 
-      /* PERUBAHAN: Menambah jarak bawah subjudul */
-      margin-bottom: 2.5rem; 
-      font-weight: 400; 
+    p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 1rem;
     }
 
-    .links { 
-      display: flex; 
-      flex-direction: column; 
-      /* PERUBAHAN: Menambah jarak antar tombol */
-      gap: 1.25rem; 
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
     }
 
     .link-btn {
-      display: flex; align-items: center; padding: 0.8rem 1rem; /* Sedikit lebih tebal */
-      background: var(--primary-color); color: white; text-decoration: none;
-      border-radius: 0.75rem; font-weight: 500; font-size: 0.95rem; border: none;
-      transition: background 0.3s ease, transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
-      will-change: transform;
-    }
-    .link-btn:hover {
-      background: var(--primary-dark-color);
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 0 25px var(--glow-color);
-    }
-    .link-btn .link-icon { margin-right: 12px; transition: transform 0.3s ease; }
-    .link-btn:hover .link-icon { transform: scale(1.2) rotate(-5deg); }
-    .link-btn .link-text { flex-grow: 1; text-align: center; }
-    .link-btn svg { width: 20px; height: 20px; fill: white; }
-    
-    .footer { 
-      /* PERUBAHAN: Menambah jarak atas footer */
-      margin-top: 2.5rem; 
-      font-size: 0.8rem; 
-      color: var(--text-light); 
-    }
-    
-    /* --- Elemen UI Tetap (Lokasi & Suara) --- */
-    .fixed-ui-element {
-      position: fixed;
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      padding: 0.6rem 1rem;
+      background: #00acc1;
+      color: white;
+      text-decoration: none;
       border-radius: 1rem;
-      padding: 0.75rem;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      z-index: 5;
-      animation-delay: calc(var(--animation-stagger-delay) * 10);
+      transition: background 0.3s;
+      font-weight: 500;
+      font-size: 0.9rem;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .link-btn:hover {
+      background: #008ca1;
+    }
+
+    .link-btn::after {
+      content: "";
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transition: transform 0.5s ease, opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .link-btn.clicked::after {
+      transform: translate(-50%, -50%) scale(4);
+      opacity: 0;
+    }
+
+    .footer {
+      margin-top: 1.5rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+
+    .sound-controls {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 9999;
+    }
+
+    .sound-controls button {
+      background: #00acc1;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .sound-controls button:hover {
+      background: #008ca1;
     }
 
     .lokasi-kiri {
-      top: 2.5rem; 
-      left: 2.5rem;
-      display: flex; flex-direction: column; gap: 0.75rem;
-      max-width: calc(100% - 5rem);
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(0, 172, 193, 0.1);
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      color: #007c91;
+      z-index: 10000;
+      display: none;
+      align-items: flex-start;
+      gap: 0.5rem;
+      flex-direction: column;
+      backdrop-filter: blur(4px);
+      max-width: 90%;
     }
-    .lokasi-item { display: flex; align-items: flex-start; gap: 0.5rem; }
-    .lokasi-icon { width: 16px; height: 16px; fill: var(--primary-color); flex-shrink: 0; margin-top: 2px; }
-    .time-display { font-size: 0.75rem; color: var(--text-light); margin-top: 2px; }
 
-    .sound-controls {
-      top: 2.5rem; 
-      right: 2.5rem;
-      display: flex; gap: 0.5rem;
+    .lokasi-icon {
+      width: 16px;
+      height: 16px;
+      fill: #007c91;
+      margin-right: 6px;
     }
-    .sound-controls button {
-        background: transparent; border: none;
-        color: white; width: 36px; height: 36px;
-        cursor: pointer; display: flex; align-items: center; justify-content: center;
-        transition: transform 0.2s ease, filter 0.3s ease;
-    }
-    .sound-controls button:hover {
-        transform: scale(1.15);
-        filter: drop-shadow(0 0 5px var(--glow-color));
-    }
-    .sound-controls button svg { fill: var(--text-dark); width: 20px; height: 20px; }
 
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: 1ms !important; animation-iteration-count: 1 !important;
-        transition-duration: 1ms !important; scroll-behavior: auto !important;
-      }
-      #particle-canvas { display: none; }
+    .lokasi-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.25rem;
     }
-    
-    @media (max-width: 768px) {
-      .lokasi-kiri { top: 1.5rem; left: 1.5rem; }
-      .sound-controls { top: 1.5rem; right: 1.5rem; }
+
+    .time-display {
+      font-size: 0.7rem;
+      color: #555;
+      margin-top: 2px;
     }
 
     @media (max-width: 480px) {
-      .lokasi-kiri { 
-        top: 1rem; 
-        left: 1rem; 
-        font-size: 0.7rem; 
-        padding: 0.5rem;
-        max-width: calc(100% - 2rem);
+      .lokasi-kiri {
+        font-size: 0.65rem;
+        padding: 0.4rem 0.8rem;
       }
-      .sound-controls { 
-        top: 1rem; 
-        right: 1rem; 
+      
+      .time-display {
+        font-size: 0.6rem;
+      }
+      
+      .sound-controls button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
       }
     }
   </style>
 </head>
 <body>
-  
-  <canvas id="particle-canvas"></canvas>
 
-  <div class="lokasi-kiri fixed-ui-element animated-element">
+  <!-- Lokasi & Tanggal + Waktu -->
+  <div class="lokasi-kiri hidden-until-loaded">
     <div class="lokasi-item">
-      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+      </svg>
       <div>
-        <strong>Pemilik:</strong> Kota Medan, Sumatera Utara
+        <strong></strong> Kota Medan, Sumatera Utara
         <div id="adminTimeDisplay" class="time-display"></div>
       </div>
     </div>
     <div class="lokasi-item">
-      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>
+      <svg class="lokasi-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+        <path d="M8 0a5 5 0 0 0-5 5c0 4.25 5 11 5 11s5-6.75 5-11a5 5 0 0 0-5-5zm0 7.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+      </svg>
       <div>
-        <strong>Anda:</strong> <span id="userLocation">Mendeteksi...</span>
+        <strong></strong> <span id="userLocation"> Mendeteksi lokasi...</span>
         <div id="userTimeDisplay" class="time-display"></div>
       </div>
     </div>
   </div>
 
-  <div class="sound-controls fixed-ui-element animated-element">
-    <button id="playPauseBtn" title="Play/Pause Intro">
-      <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M11.596 8.697l-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/></svg>
-      <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" style="display:none;"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5A1.5 1.5 0 0 1 5.5 3.5zm4 0A1.5 1.5 0 0 1 11 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/></svg>
-    </button>
-    <button id="stopBtn" title="Stop Intro">
-       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5A1.5 1.5 0 0 1 5 3.5z"/></svg>
-    </button>
+  <!-- Loader -->
+  <div class="loader-container" id="loader">
+    <div class="loader"></div>
   </div>
 
-  <div class="card-container">
-      <main class="card animated-element" id="mainCard">
-        <img src="new-image.jpg" alt="Ridho Sandhika" class="profile-img animated-element">
-        <h1 class="animated-element">Ridho Sandhika</h1>
-        <p class="subtitle animated-element">Web Developer | Game Creator | Tech Enthusiast</p>
-        
-        <div class="links">
-          <a class="link-btn animated-element" href="https://ridhosandhika2006.github.io/Website-Portfolio/" target="_blank">
-            <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M4.5 1A1.5 1.5 0 0 0 3 2.5V3H2a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1v-.5A1.5 1.5 0 0 0 11.5 1h-7zM13 5H3v8h10V5z"/></svg>
-            <span class="link-text">Web Portofolio Saya</span>
-          </a>
-          <a class="link-btn animated-element" href="https://www.medankabar.com" target="_blank">
-            <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M2.5 1A1.5 1.5 0 0 0 1 2.5v11A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-11A1.5 1.5 0 0 0 13.5 1h-11zM2 3h12v10H2V3zm2 2v1h8V5H4zm0 3v1h8V8H4zm0 3v1h4v-1H4z"/></svg>
-            <span class="link-text">MEDANKABAR.COM</span>
-          </a>
-           <a class="link-btn animated-element" href="https://annurislamic.com" target="_blank">
-            <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M10.03 2.5a.5.5 0 0 0-.525.432l-1.5 7.5a.5.5 0 1 0 .99.196l1.5-7.5a.5.5 0 0 0-.465-.628zM3.46 3.652a.5.5 0 0 0-.524.433L1.5 11.5a.5.5 0 0 0 .99.196l1.436-7.424a.5.5 0 0 0-.465-.627zm4.238-.012a.5.5 0 0 0-.525.432l-1.5 7.5a.5.5 0 1 0 .99.196l1.5-7.5a.5.5 0 0 0-.465-.628zm4.238-.012a.5.5 0 0 0-.525.432l-1.5 7.5a.5.5 0 1 0 .99.196l1.5-7.5a.5.5 0 0 0-.465-.628zM3 13a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm3 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm3 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm3 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0z"/></svg>
-            <span class="link-text">AnnurIslamic.com</span>
-          </a>
-          <a class="link-btn animated-element" href="https://gamedinoid.github.io/dinolovedino/" target="_blank">
-            <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M11.23 2.12a5.002 5.002 0 0 1 4.51 2.37C17.062 6.41 16.234 8.28 14.286 10c-1.928 1.69-3.486 2.5-4.837 2.5H8.5A1.5 1.5 0 0 1 7 11V7.5a1.5 1.5 0 0 1 1.5-1.5h.172c.49 0 .973.164 1.371.47l.192.144c.48.36.966.362 1.442.003l.117-.087c.433-.314.93-.497 1.448-.497h.03c.126 0 .252.01.378.029.5.076.99.27 1.423.565l.07.048c.45.305.975.33 1.428.01zM1.94 4.14a1.5 1.5 0 0 1 .531-2.022l1.376-.92a1.5 1.5 0 0 1 2.022.531l.92 1.376a1.5 1.5 0 0 1-.53 2.022L5 6.068a1.5 1.5 0 0 1-2.022-.53L1.94 4.14z"/></svg>
-            <span class="link-text">Game Dino Raghrrr</span>
-          </a>
-          <a class="link-btn animated-element" href="https://gamesambungayat.github.io/sambungayat/" target="_blank">
-            <svg class="link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13zM8 8a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 8zm0-3.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2a.5.5 0 0 1 .5-.5z"/></svg>
-            <span class="link-text">Game Sambung Ayat</span>
-          </a>
-        </div>
-        
-        <div class="footer animated-element">
-          &copy; 2025 studioofficialridho || Professional Final Edition
-        </div>
-      </main>
+  <!-- Konten Utama -->
+  <div class="card hidden-until-loaded" id="mainCard">
+    <img src="new-image.jpg" alt="Ridho Sandhika" class="profile-img">
+    <h1>Ridho Sandhika</h1>
+    <p>Web Developer | Game Creator | Gabut</p>
+    <div class="links">
+      <a class="link-btn" href="https://ridhosandhika2006.github.io/Website-Portfolio/" target="_blank">Web Portofolio Saya</a>
+      <a class="link-btn" href="https://www.medankabar.com" target="_blank">MEDANKABAR.COM</a>
+      <a class="link-btn" href="" target="_blank">AnnurIslamic.com</a>
+      <a class="link-btn" href="https://gamedinoid.github.io/dinolovedino/" target="_blank">Game Dino Raghrrr</a>
+      <a class="link-btn" href="https://gamesambungayat.github.io/sambungayat/" target="_blank">Game Sambung Ayat Al-Quran</a>
+    </div>
+    <div class="footer">
+      studioofficialridho 2025 || Semua Hak Cipta Dilindungi.
+    </div>
   </div>
-  
-  <audio id="introSound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto" loop></audio>
+
+  <!-- Suara Intro -->
+  <audio id="introSound" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" preload="auto"></audio>
+
+  <!-- Tombol Suara -->
+  <div class="sound-controls hidden-until-loaded" id="soundControls">
+    <button id="playIntro">Putar Intro</button>
+    <button id="stopIntro">Matikan Intro</button>
+  </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // --- Inisialisasi Fungsi UI Dasar ---
-        const initBaseUI = () => {
-            const introSound = document.getElementById("introSound");
-            const playPauseBtn = document.getElementById("playPauseBtn");
-            const stopBtn = document.getElementById("stopBtn");
-            const playIcon = document.getElementById("playIcon");
-            const pauseIcon = document.getElementById("pauseIcon");
+    // Fungsi untuk menyesuaikan tinggi viewport di mobile
+    function adjustLayout() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
 
-            const detectUserLocation = () => {
-                const locationElement = document.getElementById('userLocation');
-                if (!navigator.geolocation) {
-                    locationElement.textContent = "Geolocation tidak didukung";
-                    return;
-                }
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        const { latitude, longitude } = position.coords;
-                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                const city = data.address.city || data.address.town || data.address.village || 'Lokasi tidak diketahui';
-                                const state = data.address.state || data.address.country || 'Indonesia';
-                                locationElement.textContent = `${city}, ${state}`;
-                            })
-                            .catch(() => {
-                                locationElement.textContent = 'Gagal mengambil nama lokasi';
-                            });
-                    },
-                    (error) => {
-                        let message = "Error deteksi lokasi";
-                        if (error.code === error.PERMISSION_DENIED) message = "Izin lokasi ditolak";
-                        if (error.code === error.POSITION_UNAVAILABLE) message = "Lokasi tidak tersedia";
-                        if (error.code === error.TIMEOUT) message = "Permintaan lokasi timeout";
-                        locationElement.textContent = message;
-                    }
-                );
-            };
+    // Deteksi lokasi pengguna
+    function detectUserLocation() {
+      const locationElement = document.getElementById('userLocation');
+      
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Jika berhasil mendapatkan lokasi
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
+              .then(response => response.json())
+              .then(data => {
+                const city = data.address.city || data.address.town || data.address.village || 'Lokasi tidak diketahui';
+                locationElement.textContent = city + ', ' + (data.address.state || data.address.country || 'Indonesia');
+              })
+              .catch(() => {
+                locationElement.textContent = 'Lokasi: Diaktifkan';
+              });
+          },
+          (error) => {
+            // Jika gagal atau ditolak
+            switch(error.code) {
+              case error.PERMISSION_DENIED:
+                locationElement.textContent = " Maaf izin lokasi om ditolak...";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                locationElement.textContent = "Informasi lokasi tidak tersedia";
+                break;
+              case error.TIMEOUT:
+                locationElement.textContent = "Permintaan lokasi timeout";
+                break;
+              default:
+                locationElement.textContent = "Error deteksi lokasi";
+            }
+          }
+        );
+      } else {
+        locationElement.textContent = "Geolocation tidak didukung";
+      }
+    }
 
-            const updateTime = () => {
-                const now = new Date();
-                const timeOptions = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
-                document.getElementById("adminTimeDisplay").textContent = now.toLocaleString('id-ID', { ...timeOptions, timeZone: 'Asia/Jakarta' });
-                document.getElementById("userTimeDisplay").textContent = now.toLocaleString('id-ID', timeOptions);
-            };
+    // Format waktu untuk zona waktu tertentu
+    function formatTimeForTimezone(date, timezone) {
+      return date.toLocaleString('id-ID', {
+        timeZone: timezone,
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
 
-            playPauseBtn.addEventListener("click", () => {
-                if (introSound.paused) {
-                    introSound.play();
-                } else {
-                    introSound.pause();
-                }
-            });
-            stopBtn.addEventListener("click", () => {
-                introSound.pause();
-                introSound.currentTime = 0;
-            });
-            introSound.addEventListener('play', () => {
-                playIcon.style.display = 'none';
-                pauseIcon.style.display = 'block';
-            });
-            introSound.addEventListener('pause', () => {
-                playIcon.style.display = 'block';
-                pauseIcon.style.display = 'none';
-            });
+    // Jam & Tanggal real-time
+    function updateTime() {
+      const now = new Date();
+      
+      // Waktu admin (Medan, Indonesia - WIB)
+      const adminTimeStr = formatTimeForTimezone(now, 'Asia/Jakarta');
+      document.getElementById("adminTimeDisplay").textContent = adminTimeStr;
+      
+      // Waktu pengguna (zona waktu lokal)
+      const userTimeStr = now.toLocaleString('id-ID', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      document.getElementById("userTimeDisplay").textContent = userTimeStr;
+    }
 
-            detectUserLocation();
-            updateTime();
-            setInterval(updateTime, 1000);
+    // Loading dan animasi masuk
+    window.addEventListener("load", () => {
+      const loader = document.getElementById("loader");
+      const card = document.getElementById("mainCard");
+      const sound = document.getElementById("introSound");
+      const playBtn = document.getElementById("playIntro");
+      const stopBtn = document.getElementById("stopIntro");
 
-             introSound.play().catch(e => console.log("Autoplay diblokir oleh browser."));
-        };
+      setTimeout(() => {
+        loader.style.opacity = "0";
+        loader.style.pointerEvents = "none";
+        card.classList.add("show");
 
-        // --- Inisialisasi Fitur Interaktif Canggih ---
-        const initAdvancedFeatures = () => {
-            if (!window.matchMedia('(pointer: fine)').matches) return;
+        document.querySelectorAll(".hidden-until-loaded").forEach(el => {
+          if (el.id === "soundControls" || el.classList.contains("lokasi-kiri")) {
+            el.style.display = "flex";
+          } else {
+            el.style.display = "block";
+          }
+        });
 
-            const card = document.getElementById('mainCard');
-            const cardContainer = document.querySelector('.card-container');
-            
-            const init3DTilt = () => {
-                cardContainer.addEventListener('mousemove', (e) => {
-                    const rect = cardContainer.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -8;
-                    const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 8;
-                    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
-                    card.style.boxShadow = `${-rotateY}px ${rotateX}px 30px -5px var(--shadow-color)`;
-                });
-                cardContainer.addEventListener('mouseleave', () => {
-                    card.style.transform = 'rotateX(0) rotateY(0) scale(1)';
-                    card.style.boxShadow = '0 25px 50px -12px var(--shadow-color)';
-                });
-            };
+        // Mainkan intro otomatis
+        const playPromise = sound.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
 
-            const initParticleNetwork = () => {
-                const canvas = document.getElementById('particle-canvas');
-                const ctx = canvas.getContext('2d');
-                let particles = [];
-                let animationFrameId;
+        // Deteksi lokasi pengguna
+        detectUserLocation();
+      }, 100);
 
-                const setCanvasSize = () => {
-                    canvas.width = window.innerWidth;
-                    canvas.height = window.innerHeight;
-                };
+      playBtn.addEventListener("click", () => {
+        sound.play();
+      });
 
-                class Particle {
-                    constructor() {
-                        this.x = Math.random() * canvas.width;
-                        this.y = Math.random() * canvas.height;
-                        this.vx = (Math.random() - 0.5) * 0.3;
-                        this.vy = (Math.random() - 0.5) * 0.3;
-                        this.radius = Math.random() * 1.5 + 1;
-                    }
-                    update() {
-                        this.x += this.vx;
-                        this.y += this.vy;
-                        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-                        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                    }
-                    draw() {
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
-                        ctx.fill();
-                    }
-                }
-
-                const setup = () => {
-                    setCanvasSize();
-                    particles = [];
-                    const numParticles = Math.min(Math.floor(window.innerWidth / 25), 80);
-                    for (let i = 0; i < numParticles; i++) {
-                        particles.push(new Particle());
-                    }
-                    if(animationFrameId) cancelAnimationFrame(animationFrameId);
-                    animate();
-                };
-                
-                const connectParticles = () => {
-                    const connectDistance = Math.min(window.innerWidth / 9, 130);
-                    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--particle-color');
-                    for (let i = 0; i < particles.length; i++) {
-                        for (let j = i; j < particles.length; j++) {
-                            const distance = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
-                            if (distance < connectDistance) {
-                                ctx.globalAlpha = 1 - distance / connectDistance;
-                                ctx.beginPath();
-                                ctx.moveTo(particles[i].x, particles[i].y);
-                                ctx.lineTo(particles[j].x, particles[j].y);
-                                ctx.stroke();
-                            }
-                        }
-                    }
-                    ctx.globalAlpha = 1;
-                };
-
-                const animate = () => {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                    particles.forEach(p => p.update());
-                    connectParticles();
-                    particles.forEach(p => p.draw());
-                    animationFrameId = requestAnimationFrame(animate);
-                };
-
-                setup();
-                window.addEventListener('resize', setup);
-            };
-
-            init3DTilt();
-            initParticleNetwork();
-        };
-
-        initBaseUI();
-        initAdvancedFeatures();
+      stopBtn.addEventListener("click", () => {
+        sound.pause();
+        sound.currentTime = 0;
+      });
     });
+
+    // Efek klik tombol
+    document.querySelectorAll('.link-btn').forEach(btn => {
+      btn.addEventListener('click', function () {
+        this.classList.remove('clicked');
+        void this.offsetWidth;
+        this.classList.add('clicked');
+      });
+    });
+
+    // Panggil fungsi saat resize dan saat load
+    window.addEventListener('resize', adjustLayout);
+    window.addEventListener('load', adjustLayout);
+    
+    setInterval(updateTime, 1000);
+    updateTime();
   </script>
 </body>
 </html>
